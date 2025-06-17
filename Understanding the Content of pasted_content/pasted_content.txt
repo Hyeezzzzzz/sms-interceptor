@@ -1,0 +1,138 @@
+Sir, yes sir.
+
+Entendido. Você quer o prompt mestre. Um conjunto de instruções tão claro e poderoso que seu "MANUS AI" não terá outra opção a não ser gerar, com precisão militar, a ferramenta exata que você precisa.
+
+Copie e cole o texto abaixo, na íntegra, no seu MANUS AI. Ele foi projetado para ser um briefing de desenvolvimento completo e à prova de falhas.
+
+---
+
+### **[INÍCIO DO PROMPT PARA MANUS AI]**
+
+**SOBRE VOCÊ:** Você irá atuar como um engenheiro de software full-stack sênior, especialista em Python, automação, web scraping e desenvolvimento de ferramentas de linha de comando (CLI). Sua missão é criar um projeto completo, robusto, bem documentado e fácil de usar, seguindo as especificações abaixo com precisão absoluta.
+
+**NOME DO PROJETO:** SMS Interceptor CLI
+
+**OBJETIVO PRINCIPAL:** Criar uma ferramenta de linha de comando (CLI) em Python que automatiza a busca e a interceptação de códigos SMS de sites públicos e gratuitos que fornecem números de telefone temporários. A ferramenta deve ser modular, permitindo a fácil adição de novos sites (provedores) no futuro.
+
+---
+
+### **SEÇÃO 1: REQUISITOS FUNCIONAIS E TECNOLOGIA**
+
+1.  **Tecnologia Principal:**
+    * **Linguagem:** Python 3.10 ou superior.
+    * **Bibliotecas Essenciais:**
+        * `requests`: Para fazer as requisições HTTP aos sites.
+        * `beautifulsoup4`: Para parsear o HTML e extrair as informações.
+        * `rich`: Para criar uma interface de linha de comando bonita e amigável, com cores, tabelas e spinners.
+        * `argparse`: Para gerenciar os argumentos e comandos da CLI.
+
+2.  **Lógica de Scraping (O Coração da Ferramenta):**
+    * A ferramenta deve suportar múltiplos "provedores" (os sites de SMS).
+    * **Arquitetura Modular:** Crie uma estrutura que permita adicionar um novo provedor apenas criando um novo arquivo de classe, sem precisar alterar o código principal.
+    * **Provedores Iniciais para Implementar:**
+        * `receive-smss.com`
+        * `smstome.com`
+        * `temp-number.com`
+
+3.  **Interface de Linha de Comando (CLI):** A ferramenta será operada via comandos no terminal. A estrutura de comandos deve ser a seguinte:
+
+    * **Comando 1: Listar Provedores**
+        * **Comando:** `sms-interceptor list-providers`
+        * **Ação:** Exibe uma tabela formatada (usando `rich.table`) com os nomes e URLs dos provedores de SMS disponíveis.
+
+    * **Comando 2: Listar Números de um Provedor**
+        * **Comando:** `sms-interceptor list-numbers --provider <nome_do_provedor>`
+        * **Ação:** Acessa o site do provedor especificado, faz o scraping dos números de telefone disponíveis e os exibe em uma tabela formatada, mostrando o número e o país.
+
+    * **Comando 3: Monitorar um Número (O Comando Principal)**
+        * **Comando:** `sms-interceptor watch --provider <nome_do_provedor> --number <numero_de_telefone> --sender <remetente_opcional>`
+        * **Ação:**
+            * Começa a monitorar a página do número de telefone especificado.
+            * Exibe um spinner (usando `rich.spinner`) com a mensagem "Aguardando novas mensagens...".
+            * A cada 10 segundos, o script deve recarregar a página e verificar se chegou uma nova mensagem.
+            * Se o argumento `--sender` for fornecido (ex: "Google", "Facebook"), o script deve filtrar e só exibir mensagens daquele remetente.
+            * Ao encontrar uma nova mensagem, o spinner para, e a mensagem é exibida de forma clara e formatada (remetente, texto completo, hora).
+            * O script deve ser inteligente e extrair automaticamente qualquer sequência numérica de 5 a 8 dígitos, apresentando-a como "Possível Código Encontrado: XXXXXX".
+
+---
+
+### **SEÇÃO 2: ESTRUTURA DO PROJETO**
+
+Você deve gerar todos os arquivos necessários dentro da seguinte estrutura de diretórios. Esta organização é mandatória.
+
+```
+/sms-interceptor-cli/
+|
+├── main.py                 # Ponto de entrada da CLI, gerencia o argparse
+|
+├── providers/
+|   ├── __init__.py         # Torna o diretório um módulo Python
+|   ├── base_provider.py    # Classe base abstrata que define a interface de um provedor
+|   ├── receive_smss_com.py # Implementação do scraper para receive-smss.com
+|   └── smstome_com.py      # Implementação do scraper para smstome.com
+|   └── temp_number_com.py  # Implementação do scraper para temp-number.com
+|
+├── requirements.txt        # Lista de todas as dependências do projeto
+|
+├── README.md               # Documento principal do projeto
+|
+├── INSTALL.md              # Guia de instalação passo a passo
+|
+└── USAGE_GUIDE.md          # Manual de uso completo com exemplos
+```
+
+---
+
+### **SEÇÃO 3: CONTEÚDO DOS ARQUIVOS DE DOCUMENTAÇÃO**
+
+Gere o conteúdo para os seguintes arquivos. Use a formatação Markdown.
+
+**1. Conteúdo para `README.md`:**
+* Título: SMS Interceptor CLI
+* Um subtítulo: "Sua ferramenta de linha de comando para interceptar SMS de verificação de forma rápida e anônima."
+* Seção "O que é isso?": Explicação breve do que a ferramenta faz.
+* Seção "Principais Funcionalidades": Lista em tópicos (listar provedores, listar números, monitorar mensagens).
+* Seção "Aviso Legal": Um aviso claro de que a ferramenta deve ser usada para fins educacionais e de teste, e NUNCA para atividades ilegais ou para acessar contas sensíveis (bancos, e-mails pessoais, etc.).
+* Seção "Início Rápido": Link para os arquivos `INSTALL.md` e `USAGE_GUIDE.md`.
+
+**2. Conteúdo para `INSTALL.md`:**
+* Título: Guia de Instalação
+* Requisitos: Python 3.10+ e Git.
+* **Passo 1: Clonar o Repositório**
+    * Instrução: `git clone <URL_DO_REPOSITORIO>`
+    * Instrução: `cd sms-interceptor-cli`
+* **Passo 2: Criar um Ambiente Virtual (Recomendado)**
+    * Instrução: `python -m venv venv`
+    * Instrução para ativar (Windows): `.\venv\Scripts\activate`
+    * Instrução para ativar (Linux/macOS): `source venv/bin/activate`
+* **Passo 3: Instalar as Dependências**
+    * Instrução: `pip install -r requirements.txt`
+* **Passo 4: Verificação**
+    * Instrução para testar se a instalação funcionou: `python main.py --help`
+
+**3. Conteúdo para `USAGE_GUIDE.md`:**
+* Título: Manual de Uso - SMS Interceptor CLI
+* Seção "Comandos Básicos":
+    * **Listando Provedores:** Explicação detalhada do comando `list-providers` e o que ele retorna. Incluir um exemplo de output.
+    * **Listando Números:** Explicação detalhada do comando `list-numbers`, incluindo o argumento `--provider`. Incluir um exemplo de comando e output.
+* Seção "Monitorando Mensagens":
+    * Explicação detalhada do comando `watch`, detalhando cada um dos seus argumentos (`--provider`, `--number`, `--sender`).
+    * **Exemplo 1 (Simples):** Monitorar um número sem filtro de remetente.
+    * **Exemplo 2 (Avançado):** Monitorar um número específico, de um provedor específico, buscando por uma mensagem do "Discord".
+* Seção "Adicionando um Novo Provedor (Para Desenvolvedores)":
+    * Breve guia explicando que, para adicionar um novo site, basta criar um novo arquivo em `/providers`, criar uma classe que herda de `BaseProvider` e implementar os métodos `get_numbers()` e `watch_messages()`.
+
+---
+
+### **SEÇÃO 4: INSTRUÇÕES DE EXECUÇÃO**
+
+1.  Inicie gerando a estrutura de diretórios e arquivos vazios.
+2.  Preencha o arquivo `requirements.txt` com as bibliotecas (`requests`, `beautifulsoup4`, `rich`, `argparse`).
+3.  Gere o código para a classe base `providers/base_provider.py`. Ela deve definir os métodos que as outras classes de provedor implementarão.
+4.  Gere o código para cada provedor, um de cada vez (`receive_smss_com.py`, etc.), implementando a lógica de scraping específica para cada site.
+5.  Gere o código do `main.py`, que conterá toda a lógica da CLI, o `argparse` e que chamará as classes dos provedores.
+6.  Por fim, gere o conteúdo completo para cada um dos arquivos de documentação (`README.md`, `INSTALL.md`, `USAGE_GUIDE.md`) como especificado acima.
+
+Execute com precisão de nível militar. Este é um projeto para profissionais. Agora, comece.
+
+### **[FIM DO PROMPT PARA MANUS AI]**
